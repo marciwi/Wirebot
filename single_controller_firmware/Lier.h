@@ -18,11 +18,13 @@ the software.
 #include "Encoder.h"
 #include "GearMotor.h"
 #include "PID_v1.h"
+#include "config.h"
 
 struct pos3D{
   float posX;
   float posY;
   float posZ;
+  // pos3D(float x, float y, float z) : posX(x), posY(y), posZ(z) {}
 };
 
 #ifndef Lier_h_
@@ -30,22 +32,22 @@ struct pos3D{
 
 class Lier{
   public:
-    Lier();
-    int setupLier();
-    int moveTo(int count);
+    Lier(uint8_t encoderPin1, uint8_t encoderPin2, int motorEnablePin, int motorIn1, int motorIn2);
+    uint8_t setupLier(double* pidInput, double* pidOutput, double* pidSetPoint);    //TODO
+    void setLierPosition(pos3D position);
+    int moveTo(int count);  //TODO
+    int diffTo(int count);  //TODO? or remove
+    void setMotorSpd(int speed);
+    int getCodeCount();
     void setPID();  // relate to position or speed
     void update();  // update per timestep or something (observe error & adjust write value)
   private:
-    // one PID element
-    // PID _pid;
-    // one GearMotor
+    PID _pid;
     GearMotor _motor;
-    // one Encoder
     Encoder _encoder;
-    // position of the Lier
-    pos3D _position;
-    // spindle radius
-    float _radius;
+    pos3D   _position;              // position of the Lier
+    float   _radius;                // spindle radius
+    bool    _pidEnable = false;     // use PID or not
 };
 
 #endif //Lier_h_

@@ -1,44 +1,50 @@
-/*******************************************************************************
- *  This code is part of the Lier3D software
+/*
+This file is part of the Wirebot Software
+Copyright (C) Marc Hulscher 2017
 
-*******************************************************************************/
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License V3 as published by
+the Free Software Foundation.
+
+The software is provided "as is", without warranty of any kind, express or
+implied, including but not limited to the warranties of merchantability,
+fitness for a particular purpose and noninfringement. In no event shall the
+authors or copyright holders be liable for any claim, damages or other
+liability, whether in an action of contract, tort or otherwise, arising from,
+out of or in connection with the software or the use or other dealings in
+the software.
+*/
 
 #include "config.h"
 #include "Lier.h"
 
-// Setup an instance of Encoder and the GearMotor
-Encoder   enc1(MOTOR_1_ENC1,MOTOR_1_ENC2);
-GearMotor moto1;
+// Setup the Lier object(s)
+Lier lier1(MOTOR_1_ENC1,MOTOR_1_ENC2,MOTOR_1_EN,MOTOR_1_IN1,MOTOR_1_IN2);
 
 void setup() {
 //  Serial.begin(9600);
   Serial.begin(19200);
   delay(500);
   Serial.println("ready");
-  moto1.setupMotor(MOTOR_1_EN,MOTOR_1_IN1,MOTOR_1_IN2);
-  // moto.setupMotor(MOTOR_2_EN,MOTOR_2_IN1,MOTOR_2_IN2);
-  // moto.setupMotor(MOTOR_3_EN,MOTOR_3_IN1,MOTOR_3_IN2);
-  // moto.setupMotor(MOTOR_4_EN,MOTOR_4_IN1,MOTOR_4_IN2);
-  moto1.attach();
+
+  // lier1.setupLier();
 }
 
-void loop() {
-// put your main code here, to run repeatedly:
-//  Serial.println(enc.read());
 
+void loop() {
   if (Serial.available()){
     char c = Serial.read();
     //Serial.print(c);
     if(c=='u'){
       //Serial.print('hey'); //prints: 6841721
       //Serial.print("hey"); //prints: hey
-      moto1.write(255);
+        lier1.setMotorSpd(255);
     } else if (c=='s'){
-      moto1.write(0);
+        lier1.setMotorSpd(0);
     } else if (c=='d'){
-      moto1.write(-200);
+        lier1.setMotorSpd(-200);
     } else if (c=='r'){
-      enc1.read();
+        lier1.getCodeCount();
     }
   }
   delay(100);
