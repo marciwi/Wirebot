@@ -22,30 +22,48 @@ the software.
 Lier lier1(MOTOR_1_ENC1,MOTOR_1_ENC2,MOTOR_1_EN,MOTOR_1_IN1,MOTOR_1_IN2);
 
 void setup() {
-//  Serial.begin(9600);
-  Serial.begin(19200);
-  delay(500);
-  Serial.println("ready");
+	//  Serial.begin(9600);
+	Serial.begin(19200);
+	delay(500);
+	Serial.println("ready");
 
-  // lier1.setupLier();
+	// lier1.setupLier();
 }
 
 
 void loop() {
-  if (Serial.available()){
-    char c = Serial.read();
-    //Serial.print(c);
-    if(c=='u'){
-      //Serial.print('hey'); //prints: 6841721
-      //Serial.print("hey"); //prints: hey
-        lier1.setMotorSpd(255);
-    } else if (c=='s'){
-        lier1.setMotorSpd(0);
-    } else if (c=='d'){
-        lier1.setMotorSpd(-200);
-    } else if (c=='r'){
-        lier1.getCodeCount();
-    }
-  }
-  delay(100);
+	// Inout handler
+	// TODO: make an actual inputhandler
+	if (Serial.available()){
+		char c = Serial.read();
+		//Serial.print(c);
+		if(c=='u'){
+		  //Serial.print('hey'); //prints: 6841721
+		  //Serial.print("hey"); //prints: hey
+			lier1.setMotorSpd(255);
+		} else if (c=='s'){
+			lier1.setMotorSpd(0);
+		} else if (c=='d'){
+			lier1.setMotorSpd(-200);
+		} else if (c=='r'){
+			lier1.getCodeCount();
+		}
+  	}
+
+	// Determine motor commands
+	lier1.update();
+
+	lier1.setCount(0);
+	bool test=true;
+	while(test){
+		lier1.moveTo(1000);
+		if(lier1.getCodeCount()>=1000){
+			test=false;
+		}
+		lier1.update();
+		delay(100);
+	}
+
+	//
+	delay(100);
 }

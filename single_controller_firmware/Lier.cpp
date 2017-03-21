@@ -27,15 +27,25 @@ _encoder(encoderPin1,encoderPin2)
 	_position.posY = 0.0;
 	_position.posZ = 0.0;
 	_radius = SPINDLE_RADIUS;
+    _pidEnable = false;
 }
 
 uint8_t Lier::setupLier(double* pidInput, double* pidOutput, double* pidSetPoint){
-	_pid.setup(0,0,0,PID_KP,PID_KI,PID_KD,DIRECT);		//TODO: the values are just a placeholder for now
-	_pidEnable = true;
+	_pid.setup(&_pidInput,&_pidOutput,&_pidSetPoint,PID_KP,PID_KI,PID_KD,DIRECT);		//TODO: the values are just a placeholder for now
+    _pid.SetOutputLimits(255, 255);
+    _pidEnable = true;
 }
 
 void Lier::setLierPosition(pos3D position){
 	_position = position;
+}
+
+void Lier::moveTo(int count){
+    _pidSetPoint = count;
+}
+
+void Lier::setCount(int count){
+	_encoder.write(count);
 }
 
 void Lier::setMotorSpd(int speed){
@@ -44,4 +54,12 @@ void Lier::setMotorSpd(int speed){
 
 int Lier::getCodeCount(){
 	return _encoder.read();
+}
+
+void Lier::update(){
+    _pidInput = _encoder.read();
+
+    _pid.Compute();
+
+    _motor.write(_pidOutput);
 }

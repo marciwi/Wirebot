@@ -35,7 +35,8 @@ class Lier{
     Lier(uint8_t encoderPin1, uint8_t encoderPin2, int motorEnablePin, int motorIn1, int motorIn2);
     uint8_t setupLier(double* pidInput, double* pidOutput, double* pidSetPoint);    //TODO
     void setLierPosition(pos3D position);
-    int moveTo(int count);  //TODO
+    void moveTo(int count);  //TODO
+    void setCount(int count); 
     int diffTo(int count);  //TODO? or remove
     void setMotorSpd(int speed);
     int getCodeCount();
@@ -48,6 +49,7 @@ class Lier{
     pos3D   _position;              // position of the Lier
     float   _radius;                // spindle radius
     bool    _pidEnable = false;     // use PID or not
+    double  _pidSetPoint, _pidInput, _pidOutput;
 };
 
 #endif //Lier_h_
