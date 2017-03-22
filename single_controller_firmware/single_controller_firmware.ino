@@ -27,12 +27,13 @@ void setup() {
 	delay(500);
 	Serial.println("ready");
 
-	// lier1.setupLier();
+	lier1.setupLier();
+	lier1.setCount(20000);
 }
 
 
 void loop() {
-	// Inout handler
+	// Input handler
 	// TODO: make an actual inputhandler
 	if (Serial.available()){
 		char c = Serial.read();
@@ -46,24 +47,21 @@ void loop() {
 		} else if (c=='d'){
 			lier1.setMotorSpd(-200);
 		} else if (c=='r'){
-			lier1.getCodeCount();
+			Serial.println(lier1.getCodeCount());
 		}
   	}
 
 	// Determine motor commands
-	lier1.update();
-
-	lier1.setCount(0);
+	Serial.println(lier1.getCodeCount());
 	bool test=true;
 	while(test){
-		lier1.moveTo(1000);
+		lier1.moveTo(10000);
 		if(lier1.getCodeCount()>=1000){
 			test=false;
 		}
 		lier1.update();
-		delay(100);
+		// delay(100);
 	}
 
-	//
-	delay(100);
+	// delay(100);
 }

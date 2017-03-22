@@ -30,10 +30,13 @@ _encoder(encoderPin1,encoderPin2)
     _pidEnable = false;
 }
 
-uint8_t Lier::setupLier(double* pidInput, double* pidOutput, double* pidSetPoint){
-	_pid.setup(&_pidInput,&_pidOutput,&_pidSetPoint,PID_KP,PID_KI,PID_KD,DIRECT);		//TODO: the values are just a placeholder for now
-    _pid.SetOutputLimits(255, 255);
+uint8_t Lier::setupLier(){
+	_pid.setup(&_pidInput,&_pidOutput,&_pidSetPoint,PID_KP,PID_KI,PID_KD,REVERSE);		//TODO: the values are just a placeholder for now
+	_pid.SetControllerDirection(0);
+	_pid.SetMode(AUTOMATIC);
+    _pid.SetOutputLimits(-255, 255);
     _pidEnable = true;
+	return 1;
 }
 
 void Lier::setLierPosition(pos3D position){
@@ -59,7 +62,17 @@ int Lier::getCodeCount(){
 void Lier::update(){
     _pidInput = _encoder.read();
 
-    _pid.Compute();
+	Serial.print("compute ");
+    Serial.println(_pid.Compute());
+	_pid.Compute();
 
-    _motor.write(_pidOutput);
+	Serial.print("setpoint ");
+	Serial.println(_pidSetPoint);
+
+	Serial.print("input ");
+	Serial.println(_pidInput);
+
+	Serial.print("output ");
+	_motor.write(_pidOutput);
+	Serial.println(_pidOutput);
 }

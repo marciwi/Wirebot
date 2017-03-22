@@ -18,9 +18,9 @@
 #define INVERT_MOTOR_3 FALSE
 #define INVERT_MOTOR_4 FALSE
 
-#define PID_KP 1.0
-#define PID_KI 0.0
-#define PID_KD 0.0
+#define PID_KP 10.0
+#define PID_KI 1.0
+#define PID_KD 4.0
 
 #define SPINDLE_RADIUS 0.01	//METER
 

@@ -33,10 +33,10 @@ struct pos3D{
 class Lier{
   public:
     Lier(uint8_t encoderPin1, uint8_t encoderPin2, int motorEnablePin, int motorIn1, int motorIn2);
-    uint8_t setupLier(double* pidInput, double* pidOutput, double* pidSetPoint);    //TODO
+    uint8_t setupLier();    //TODO
     void setLierPosition(pos3D position);
     void moveTo(int count);  //TODO
-    void setCount(int count); 
+    void setCount(int count);
     int diffTo(int count);  //TODO? or remove
     void setMotorSpd(int speed);
     int getCodeCount();
